@@ -1,30 +1,31 @@
 from lexico import identificar_tokens
+from sintactico import Parser
 
 def main():
-    # Ejemplo que contiene todas las instrucciones de la HT02
-    codigo_prueba = """
-    int main() {
-        if (x > 0) {
-            print(x);
-        } else {
-            println(0);
-        }
-        for (int i = 0; i < 10; i = i + 1) {
-            while (i < 5) {
-                print(i);
-            }
-        }
+    codigo = """
+    int tareaHT03(int n) {
+      if (n > 0) {
+        println(n);
+      } else {
+        print(0);
+      }
+      for (int i = 0; i < n; i = i + 1) {
+        print(i);
+      }
+      while (n > 0) {
+        n = n - 1;
+      }
+      return n;
     }
     """
-    
-    print("Iniciando Analizador Léxico para HT02...")
-    tokens = identificar_tokens(codigo_prueba)
-    
-    # Imprimimos los tokens de forma ordenada
-    print(f"{'TIPO DE TOKEN':<20} | {'VALOR':<15}")
-    print("-" * 40)
-    for tipo, valor in tokens:
-        print(f"{tipo:<20} | {valor:<15}")
+    tokens = identificar_tokens(codigo)
+    parser = Parser(tokens)
+    try:
+        arbol = parser.parsear()
+        print("--- AST Generado y Traducido (HT03) ---")
+        print(arbol.traducirPy())
+    except Exception as e:
+        print(f"Error: {e}")
 
 if __name__ == "__main__":
     main()
